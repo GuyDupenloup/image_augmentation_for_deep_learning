@@ -63,74 +63,11 @@ def augment_data(images, labels, pixels_range):
         bernoulli_mix=False
     )(images)
 
-    images = RandomErasing(
-        patch_area=(0.05, 0.3),
-        patch_aspect_ratio=(0.3, 3.0),
-        fill_method='black',
-        pixels_range=pixels_range,
-        augmentation_ratio=0.1,
-        bernoulli_mix=False
-    )(images)
-
-    images = RandomHideAndSeek(
-        grid_size=(4, 4),
-        erased_patches=(1, 5),
-        fill_method='black',
-        pixels_range=pixels_range,
-        augmentation_ratio=0.1,
-        bernoulli_mix=False
-    )(images)
-
-    images = RandomGridMask(
-        unit_length=(0.2, 0.4),
-        masked_ratio=0.5,
-        fill_method='black',
-        pixels_range=pixels_range,
-        augmentation_ratio=0.1,
-        bernoulli_mix=False
-    )(images)
-	
-    images, labels = RandomCutMix(
-        patch_area=(0.05, 0.3),
-        patch_aspect_ratio=(0.3, 3.0),
-        alpha=1.0,
-        augmentation_ratio=1.0,
-        bernoulli_mix=False
-    )((images, labels))
-
     images, labels = RandomMixup(
         alpha=1.0,
         augmentation_ratio=1.0,
         bernoulli_mix=False
     )((images, labels))
-	
-    images = RandomCutBlur(
-        patch_area=(0.2, 0.4),
-        patch_aspect_ratio=(0.3, 0.4),
-        blur_factor=0.2,
-        augmentation_ratio=0.1,
-        bernoulli_mix=False
-    )(images)
-
-    images = RandomCutPaste(
-        patch_area=(0.1, 0.3),
-        patch_aspect_ratio=(0.3, 2.0),
-        augmentation_ratio=0.1,
-        bernoulli_mix=False
-    )(images)
-
-    images = RandomCutSwap(
-        patch_area=(0.1, 0.3),
-        patch_aspect_ratio=(0.3, 2.0),
-        augmentation_ratio=0.1,
-        bernoulli_mix=False
-    )(images)
-
-    images = RandomCutThumbnail(
-        thumbnail_area=0.1,
-        augmentation_ratio=0.1,
-        bernoulli_mix=False
-    )(images)
 
     return images, labels
 

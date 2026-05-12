@@ -3,8 +3,7 @@
 
 # Image Data Augmentation Using Cutting, Masking, and Mixing
 
-Boost your model’s performance with advanced image augmentation techniques!
-This repository provides high-performance, easy-to-use implementations of popular cutting, masking, and mixing strategies in both Tensorflow and Pytorch.
+This repository contains high-performance, easy-to-use implementations of popular cutting, masking, and mixing strategies in both TensorFlow and PyTorch.
 
 These methods increase dataset diversity and improve model generalization across image classification, object detection, anomaly detection, and other vision tasks.
 
@@ -53,21 +52,21 @@ All augmentation capabilities have been designed for performance, flexibility, a
 - **Default values**: Default settings are provided, allowing for immediate use without extensive setup.
 - **Parameter validation**: Augmentation parameters are thoroughly verified and detailed error messages are provided.
 
-## 2. Tensorflow implementation
+## 2. TensorFlow implementation
 
 ### Layers and functions
 
-Most augmentation capabilities are implemented as custom layers. These layers can be used in the preprocessing stack and mixed freely with Tensorflow layers, such as RandomContrast and RandomFlip.
+Most augmentation capabilities are implemented as custom layers. These layers can be used in the preprocessing stack and mixed freely with TensorFlow layers, such as RandomContrast and RandomFlip.
 
 There are two augmentation strategies that require a different approach: CutMix and Mixup. Unlike the other augmentation techniques that alter a single image and leave the labels unchanged, CutMix and Mixup combine two images and modify the labels to reflect the contribution of both. This cannot be handled with layers as they operate only on images. For these capabilities, functions are provided that can be used in a custom model.
 
-Both layers and functions were designed to be integrated in the training loop to maximize GPU utilization (they are vectorized and compilable into Tensorflow's graph). Training script examples are provided that demonstrate the use of preprocessing layers and custom models. The purpose of these scripts is to show how to use the available capabilities, not to actually train a model. All the layers and functions are used successively, which would not make sense in an actual training.
+Both layers and functions were designed to be integrated in the training loop to maximize GPU utilization (they are vectorized and compilable into TensorFlow's graph). Training script examples are provided that demonstrate the use of preprocessing layers and custom models.
 
 Each layer and function comes with a detailed docstring in the source code that describes its parameters.
 
 ### Source Code
 
-The Tensorflow source code is in directory **src/tf**
+The TensorFlow source code is in directory **src/tf**
 
 | Strategy        | File               |  Name                | Implementation  |
 |-----------------|--------------------|----------------------|-----------------|
@@ -121,32 +120,32 @@ To make your results reproducible, set global seeds as shown below.
 ```bash
 import random
 import numpy as np
-import Tensorflow as tf
+import TensorFlow as tf
 
 seed = 1234
 random.seed(seed)             # Python RGN
 np.random.seed(seed)          # NumPy RGN
-tf.random.set_seed(seed)      # Tensorflow RGN
+tf.random.set_seed(seed)      # TensorFlow RGN
 ```
 
-Seeds should be set immediately after importing Python packages and Tensorflow, before you import the data augmentation packages (and any other packages you may have).
+Seeds should be set immediately after importing Python packages and TensorFlow, before you import the data augmentation packages (and any other packages you may have).
 
-## 3. Pytorch Implementation
+## 3. PyTorch Implementation
 
 ### V2 transforms
 
-All augmentation capabilities are implemented as V2 transforms. They can be mixed freely with Pytorch V2 transforms, such as color jitter and affine transforms. As they are integrated in the training loop, they run on the GPU.
+All augmentation capabilities are implemented as V2 transforms. They can be mixed freely with PyTorch V2 transforms, such as color jitter and affine transforms. As they are integrated in the training loop, they run on the GPU.
 
-Note that only V2 transforms run on the GPU, not the transforms that were initially in Pytorch (and still are). These transforms are integrated in the data loading pipeline, and thus run on the CPU.
+Note that only V2 transforms run on the GPU, not the transforms that were initially in PyTorch (and still are). These transforms are integrated in the data loading pipeline, and thus run on the CPU.
 
-An example of training script is provided that demonstrates the use of the data augmentation transforms. The purpose of this script is to show how to use the available capabilities, not to actually train a model. All the transforms are used successively, which would not make sense in an actual training.
+An example of training script is provided that demonstrates the use of the data augmentation transforms.
 
 Each transform comes with a detailed docstring in the source code that describes its parameters.
 
 
 ### Source Code
 
-The Pytorch source code is in directory **src/pt**
+The PyTorch source code is in directory **src/pt**
 
 | Method          | File               |  transform.v2        |
 |-----------------|--------------------|----------------------|
@@ -154,8 +153,8 @@ The Pytorch source code is in directory **src/pt**
 | Random Erasing  | `erasing.py`       | `RandomErasing`      |
 | Hide-and-Seek   | `hide_and_seek.py` | `RandomHideAndSeek`  |
 | Grid Mask       | `grid_mask.py`     | `RandomGridMask`     |
-| CutMix          | `cutmix.py`        | `random_cutmix`      |
-| Mixup           | `mixup.py`         | `random_mixup`       |
+| CutMix          | `cutmix.py`        | `RandomCutMix`       |
+| Mixup           | `mixup.py`         | `RandomMixup`        |
 | CutBlur         | `cutblur.py`       | `RandomCutBlur`      |
 | Cut Thumbnail   | `cut_thumbnail.py` | `RandomCutThumbnail` |
 | CutPaste        | `cutpaste.py`      | `RandomCutPaste`     |
@@ -204,14 +203,14 @@ torch.cuda.manual_seed(seed)      # current GPU RNG
 torch.cuda.manual_seed_all(seed)  # all GPU devices
 ```
 
-Seeds should be set immediately after importing Python packages and Pytorch, before you import the data augmentation packages (and any other packages you may have).
+Seeds should be set immediately after importing Python packages and PyTorch, before you import the data augmentation packages (and any other packages you may have).
 
 
 ## 4. Visualizing augmented images
 
 The **src/tf** and **src/pt** directories both contain a script named `test_images.py`.
 
-These scripts enable you to test the different augmentation capabilities on the Flowers dataset (5 classes for Tensorflow, 102 classes for Pytorch). Original images and augmented images are displayed side-by-side. The images above were created with these scripts.
+These scripts enable you to test the different augmentation capabilities on the Flowers dataset (5 classes for TensorFlow, 102 classes for PyTorch). Original images and augmented images are displayed side-by-side. The images above were created with these scripts.
 
 Using these image viewing scripts, you can play with the parameters of the layers, functions and transforms, and visualize the effects.
 

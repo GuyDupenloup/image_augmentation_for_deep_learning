@@ -3,17 +3,11 @@
 
 import tensorflow as tf
 import tensorflow_datasets as tfds
-from tensorflow.keras.layers import Rescaling, RandomContrast, RandomBrightness, RandomFlip, RandomRotation
+from tensorflow.keras.layers import (
+    Rescaling, RandomContrast, RandomBrightness, RandomFlip, RandomRotation
+)
 
-from cutout import RandomCutout
 from erasing import RandomErasing
-from hide_and_seek import RandomHideAndSeek
-from grid_mask import RandomGridMask
-from cutblur import RandomCutBlur
-from cutpaste import RandomCutPaste
-from cutswap import RandomCutSwap
-from cut_thumbnail import RandomCutThumbnail
-
 
 def _get_data_loaders(image_size, batch_size):
     """
@@ -97,15 +91,6 @@ def _create_augmented_model(base_model, rescaling, pixels_range):
     model_layers.append(RandomBrightness(0.5))
     model_layers.append(RandomFlip(mode='horizontal'))
     model_layers.append(
-        RandomCutout(
-            patch_area=0.3,
-            fill_method='black',
-            pixels_range=pixels_range,
-            augmentation_ratio=0.1,   # Augment 10% of images
-            bernoulli_mix=False
-        )
-    )
-    model_layers.append(
         RandomErasing(
             patch_area=(0.05, 0.3),
             patch_aspect_ratio=(0.3, 3.0),
@@ -114,56 +99,7 @@ def _create_augmented_model(base_model, rescaling, pixels_range):
             bernoulli_mix=False
         )
     )
-    model_layers.append(
-        RandomHideAndSeek(
-            grid_size=(4, 4),
-            erased_patches=(1, 5),
-            fill_method='black',
-            augmentation_ratio=0.1,
-            bernoulli_mix=False
-        )
-    )
-    model_layers.append(
-        RandomGridMask(
-            unit_length=(0.2, 0.4),
-            masked_ratio=0.5,
-            fill_method='black',
-            augmentation_ratio=0.1,
-            bernoulli_mix=False
-        )
-    )
-    model_layers.append(
-        RandomCutBlur(
-            patch_area=(0.2, 0.4),
-            patch_aspect_ratio=(0.3, 0.4),
-            blur_factor=0.2,
-            augmentation_ratio=0.1,
-            bernoulli_mix=False
-        )
-    )
-    model_layers.append(
-        RandomCutThumbnail(
-            thumbnail_area=0.1,
-            augmentation_ratio=0.1,
-            bernoulli_mix=False
-        )
-    )
-    model_layers.append(
-        RandomCutPaste(
-            patch_area=(0.1, 0.3),
-            patch_aspect_ratio=(0.3, 2.0),
-            augmentation_ratio=0.1,
-            bernoulli_mix=False
-        )
-    )
-    model_layers.append(
-        RandomCutSwap(
-            patch_area=(0.1, 0.3),
-            patch_aspect_ratio=(0.3, 2.0),
-            augmentation_ratio=0.1,
-            bernoulli_mix=False
-        )
-    )
+
 
     model_layers.append(RandomRotation(factor=0.05))
 

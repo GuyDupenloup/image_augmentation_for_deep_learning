@@ -3,20 +3,13 @@
 
 import tensorflow as tf
 import tensorflow_datasets as tfds
-from tensorflow.keras.layers import RandomContrast, RandomBrightness, RandomFlip, RandomRotation
-
+from tensorflow.keras.layers import (
+    RandomContrast, RandomBrightness, RandomFlip
+)
 from cutout import RandomCutout
-from erasing import RandomErasing
-from hide_and_seek import RandomHideAndSeek
-from grid_mask import RandomGridMask
-from cutblur import RandomCutBlur
-from cutpaste import RandomCutPaste
-from cutswap import RandomCutSwap
-from cut_thumbnail import RandomCutThumbnail
 from cutmix import random_cutmix
 from mixup import random_mixup
 
-tf.config.run_functions_eagerly(True)
 
 class CustomModel(tf.keras.Model):
 
@@ -29,57 +22,11 @@ class CustomModel(tf.keras.Model):
         self.random_contrast = RandomContrast(factor=0.2)
         self.random_brightness = RandomBrightness(factor=0.2)
         self.random_flip = RandomFlip(mode='horizontal')
-        self.random_rotation = RandomRotation(factor=0.05)
 
         self.random_cutout = RandomCutout(
             patch_area=0.3,
             fill_method='black',
             pixels_range=pixels_range,
-            augmentation_ratio=0.1,
-            bernoulli_mix=False
-        )
-        self.random_erasing = RandomErasing(
-            patch_area=(0.05, 0.3),
-            patch_aspect_ratio=(0.3, 3.0),
-            fill_method='black',
-            augmentation_ratio=0.1,
-            bernoulli_mix=False
-        )
-        self.random_hide_and_seek = RandomHideAndSeek(
-            grid_size=(4, 4),
-            erased_patches=(1, 5),
-            fill_method='black',
-            augmentation_ratio=0.1,
-            bernoulli_mix=False
-        )
-        self.random_grid_mask = RandomGridMask(
-            unit_length=(0.2, 0.4),
-            masked_ratio=0.5,
-            fill_method='black',
-            augmentation_ratio=0.1,
-            bernoulli_mix=False
-        )
-        self.random_cutblur = RandomCutBlur(
-            patch_area=(0.2, 0.4),
-            patch_aspect_ratio=(0.3, 0.4),
-            blur_factor=0.2,
-            augmentation_ratio=0.1,
-            bernoulli_mix=False
-        )
-        self.random_cut_thumbnail = RandomCutThumbnail(
-            thumbnail_area=0.1,
-            augmentation_ratio=0.1,
-            bernoulli_mix=False
-        )
-        self.random_cutpaste = RandomCutPaste(
-            patch_area=(0.1, 0.3),
-            patch_aspect_ratio=(0.3, 2.0),
-            augmentation_ratio=0.1,
-            bernoulli_mix=False
-        )
-        self.random_cutswap = RandomCutSwap(
-            patch_area=(0.1, 0.3),
-            patch_aspect_ratio=(0.3, 2.0),
             augmentation_ratio=0.1,
             bernoulli_mix=False
         )
@@ -94,16 +41,8 @@ class CustomModel(tf.keras.Model):
         images = self.random_contrast(images, training=True)
         images = self.random_brightness(images, training=True)
         images = self.random_flip(images, training=True)
-        images = self.random_rotation(images, training=True)
-
+        
         images = self.random_cutout(images, training=True)
-        images = self.random_erasing(images, training=True)
-        images = self.random_hide_and_seek(images, training=True)
-        images = self.random_grid_mask(images, training=True)
-        images = self.random_cutblur(images, training=True)
-        images = self.random_cut_thumbnail(images, training=True)
-        images = self.random_cutpaste(images, training=True)
-        images = self.random_cutswap(images, training=True)
 
         images, labels = random_cutmix(
             images,
@@ -112,13 +51,6 @@ class CustomModel(tf.keras.Model):
             patch_aspect_ratio=(0.3, 3.0),
             alpha=1.0,
             augmentation_ratio=0.1,    # Augment 10% of images
-            bernoulli_mix=False
-        )
-        images, labels = random_mixup(
-            images,
-            labels,
-            alpha=1.0,
-            augmentation_ratio=0.1,
             bernoulli_mix=False
         )
 
