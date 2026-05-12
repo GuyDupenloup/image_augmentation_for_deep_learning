@@ -1,11 +1,20 @@
 # Copyright (c) 2025 Guy Dupenloup
 # Licensed under the MIT License. See LICENSE file for details.
 
+import random
+import numpy as np
 import tensorflow as tf
 import tensorflow_datasets as tfds
 from tensorflow.keras.layers import (
     RandomContrast, RandomBrightness, RandomFlip
 )
+
+# Seed random generators
+seed = 1234
+random.seed(seed)             # Python RGN
+np.random.seed(seed)          # NumPy RGN
+tf.random.set_seed(seed)      # TensorFlow RGN
+
 from cutout import RandomCutout
 from cutmix import random_cutmix
 from mixup import random_mixup

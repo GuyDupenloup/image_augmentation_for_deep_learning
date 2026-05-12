@@ -120,7 +120,7 @@ To make your results reproducible, set global seeds as shown below.
 ```bash
 import random
 import numpy as np
-import TensorFlow as tf
+import tensorflow as tf
 
 seed = 1234
 random.seed(seed)             # Python RGN

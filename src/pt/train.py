@@ -1,6 +1,8 @@
 # Copyright (c) 2025 Guy Dupenloup
 # Licensed under the MIT License. See LICENSE file for details.
 
+import random
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -9,16 +11,16 @@ from torch.utils.data import DataLoader
 from torchvision.datasets import Flowers102
 from torchvision.models import mobilenet_v3_small
 
+# Seed random generators
+seed = 1234
+random.seed(seed)                 # Python RNG
+np.random.seed(seed)              # NumPy RNG
+torch.manual_seed(seed)           # CPU RNG
+torch.cuda.manual_seed(seed)      # current GPU RNG
+torch.cuda.manual_seed_all(seed)  # all GPU devices
+
 from cutout import RandomCutout
-from erasing import RandomErasing
-from hide_and_seek import RandomHideAndSeek
-from grid_mask import RandomGridMask
-from cutmix import RandomCutMix
 from mixup import RandomMixup
-from cutblur import RandomCutBlur
-from cutpaste import RandomCutPaste
-from cutswap import RandomCutSwap
-from cut_thumbnail import RandomCutThumbnail
 
 
 def get_data_loaders(image_size, rescaling, num_classes, batch_size, device):
