@@ -3,11 +3,9 @@
 
 # Image Data Augmentation Using Cutting, Masking, and Mixing
 
-This repository contains high-performance, easy-to-use implementations of popular image data augmentation strategies, including cutting, masking, and mixing.
+This repository contains high-performance, easy-to-use TensorFlow and Pytorch implementations of popular image data augmentation strategies, including cutting, masking, and mixing.
 
 These methods increase dataset diversity and improve model generalization across image classification, object detection, anomaly detection, and other vision tasks.
-
-Code is available in TensorFlow and PyTorch.
 
 ## 1. Introduction
 

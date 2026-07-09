@@ -76,7 +76,7 @@ def check_argument(
     >>> # 2nd tuple value greater than the 1st one
     >>> check_argument(
     ...     (0.3, 0.7),
-    ...     context={'area_ratio_range': 'arg', 'caller_name': 'random_erasing'},
+    ...     context={'arg_name': area_ratio_range', 'caller_name': 'random_erasing'},
     ...     constraints={'format': 'tuple', 'data_type': 'float', 'min_val': ('>', 0)}
     ... )
 
